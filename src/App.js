@@ -1,24 +1,46 @@
-import logo from './logo.svg';
+import React, { useState, useMemo } from 'react';
 import './App.css';
+import Homepage from './pages/Homepage';
+
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+import { ColorModeContext } from './utils/context';
 
 function App() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
+
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode],
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ColorModeContext.Provider value={colorMode} >
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="App">
+          <Homepage />
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
