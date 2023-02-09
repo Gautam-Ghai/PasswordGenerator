@@ -10,14 +10,17 @@
     flex-direction: column;
 }
 
-.header {
+.margin-1 {
     margin: 1rem;
 }
 
-.text {
+.password-settings {
     margin: 1rem;
+    padding: 3rem
 }
 
-.card {
-    margin: 1rem;
-}
+@media screen and (max-width: 480px) {
+    .password-settings {
+        padding: 2rem
+    }
+  }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import './Homepage.css'
 
 import Paper from '@mui/material/Paper';
@@ -10,6 +10,7 @@ import RadioButtonsGroup from '../components/radio';
 import Checkboxes from '../components/checkbox';
 import Password from '../components/password';
 import Navbar from '../components/navbar';
+import Footer from '../components/footer';
 
 const Homepage = () => {
 
@@ -20,61 +21,59 @@ const Homepage = () => {
   const [num, setNum] = useState(true)
   const [sym, setSym] = useState(true)
 
-  function arrayFromLowToHigh(low, high) {
-    const array = []
-    for (let i = low; i <= high; i++) {
-      array.push(i)
+
+
+  const handleGenerate = useCallback(() => {
+    function arrayFromLowToHigh(low, high) {
+      const array = []
+      for (let i = low; i <= high; i++) {
+        array.push(i)
+      }
+      return array
     }
-    return array
-  }
 
-  const UPPERCASE_CHAR_CODES = arrayFromLowToHigh(65, 90)
-  const LOWERCASE_CHAR_CODES = arrayFromLowToHigh(97, 122)
-  const NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57)
-  const SYMBOL_CHAR_CODES = [35, 36, 37, 38, 40, 41, 60, 61, 62, 63, 64, 91, 92, 93, 95, 123, 125]
+    const UPPERCASE_CHAR_CODES = arrayFromLowToHigh(65, 90)
+    const LOWERCASE_CHAR_CODES = arrayFromLowToHigh(97, 122)
+    const NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57)
+    const SYMBOL_CHAR_CODES = [35, 36, 37, 38, 40, 41, 60, 61, 62, 63, 64, 91, 92, 93, 95, 123, 125]
 
-  function generatePassword(characterAmount, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
-    let charCodes = [];
-    if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
-    if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
-    if (includeSymbols) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
-    if (includeNumbers) charCodes = charCodes.concat(NUMBER_CHAR_CODES)
+    function generatePassword(characterAmount, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
+      let charCodes = [];
+      if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
+      if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
+      if (includeSymbols) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
+      if (includeNumbers) charCodes = charCodes.concat(NUMBER_CHAR_CODES)
 
-    const passwordCharacters = []
-    for (let i = 0; i < characterAmount; i++) {
-      const characterCode = charCodes[Math.floor(Math.random() * charCodes.length)]
-      passwordCharacters.push(String.fromCharCode(characterCode))
+      const passwordCharacters = []
+      for (let i = 0; i < characterAmount; i++) {
+        const characterCode = charCodes[Math.floor(Math.random() * charCodes.length)]
+        passwordCharacters.push(String.fromCharCode(characterCode))
+      }
+      setPassword(passwordCharacters.join(''));
     }
-    setPassword(passwordCharacters.join(''));
-  }
 
-  const handleGenerate = () => {
     generatePassword(passLength, lower, upper, num, sym)
-  }
-
-  useEffect(() => {
-    handleGenerate()
-  }, [])
-
-  useEffect(() => {
-    handleGenerate()
   }, [passLength, lower, upper, num, sym])
+
+  useEffect(() => {
+    handleGenerate()
+  }, [handleGenerate, passLength, lower, upper, num, sym])
 
   return (
     <>
       <Navbar />
       <div className='center'>
         <div className='main'>
-          <h1 className='header'>
+          <h1 className='margin-1'>
             Need a password? Try our Password Generator.
           </h1>
-          <p className='text'>
+          <p className='margin-1'>
             Instantly generate a secure, random passwords to stay safe online.
           </p>
-          <Paper elevation={3} className="card">
+          <Paper elevation={3} className="margin-1">
             <Password password={password} handleGenerate={handleGenerate} />
           </Paper>
-          <Paper elevation={3} className="card" sx={{padding: '3rem'}}>
+          <Paper elevation={3} className="password-settings">
             <Grid container spacing={2}>
               <Grid xs={12} md={6}>
                 <InputSlider passLength={passLength} setPassLength={setPassLength} />
@@ -98,6 +97,7 @@ const Homepage = () => {
           </Paper>
         </div>
       </div>
+      <Footer />
     </>
   )
 }
