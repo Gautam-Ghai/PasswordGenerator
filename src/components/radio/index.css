@@ -1,0 +1,9 @@
+.pText {
+    display: flex;
+    min-width: 110px;
+}
+
+.icon {
+    padding-left: 4px;
+    font-size: 20px !important;
+}

@@ -11,6 +11,7 @@ import Checkboxes from '../components/checkbox';
 import Password from '../components/password';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
+import CustomeButton from '../components/buttons';
 
 const Homepage = () => {
 
@@ -20,6 +21,7 @@ const Homepage = () => {
   const [upper, setUpper] = useState(true)
   const [num, setNum] = useState(true)
   const [sym, setSym] = useState(true)
+  const [opt, setOpt] = useState('all')
 
 
 
@@ -35,14 +37,30 @@ const Homepage = () => {
     const UPPERCASE_CHAR_CODES = arrayFromLowToHigh(65, 90)
     const LOWERCASE_CHAR_CODES = arrayFromLowToHigh(97, 122)
     const NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57)
-    const SYMBOL_CHAR_CODES = [35, 36, 37, 38, 40, 41, 60, 61, 62, 63, 64, 91, 92, 93, 95, 123, 125]
+    const SYMBOL_CHAR_CODES = [33, 35, 36, 37, 38, 40, 41, 60, 61, 62, 63, 64, 91, 92, 93, 95, 123, 125]
 
-    function generatePassword(characterAmount, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
+    const MOD_UPPERCASE = UPPERCASE_CHAR_CODES.filter(num => ![73, 76, 79].includes(num))
+    const MOD_LOWERCASE = LOWERCASE_CHAR_CODES.filter(num => ![105, 108, 111].includes(num))
+    const MOD_Num = NUMBER_CHAR_CODES.filter(num => ![48, 49].includes(num))
+
+    function generatePassword(characterAmount, includeLowercase, includeUppercase, includeNumbers, includeSymbols, opt) {
       let charCodes = [];
-      if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
-      if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
-      if (includeSymbols) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
-      if (includeNumbers) charCodes = charCodes.concat(NUMBER_CHAR_CODES)
+      if (opt === 'say') {
+        if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
+        if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
+      }
+      else if (opt === 'read') {
+        if (includeLowercase) charCodes = charCodes.concat(MOD_LOWERCASE)
+        if (includeUppercase) charCodes = charCodes.concat(MOD_UPPERCASE)
+        if (includeSymbols) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
+        if (includeNumbers) charCodes = charCodes.concat(MOD_Num)
+      }
+      else {
+        if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
+        if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
+        if (includeSymbols) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
+        if (includeNumbers) charCodes = charCodes.concat(NUMBER_CHAR_CODES)
+      }
 
       const passwordCharacters = []
       for (let i = 0; i < characterAmount; i++) {
@@ -52,12 +70,12 @@ const Homepage = () => {
       setPassword(passwordCharacters.join(''));
     }
 
-    generatePassword(passLength, lower, upper, num, sym)
-  }, [passLength, lower, upper, num, sym])
+    generatePassword(passLength, lower, upper, num, sym, opt)
+  }, [passLength, lower, upper, num, sym, opt])
 
   useEffect(() => {
     handleGenerate()
-  }, [handleGenerate, passLength, lower, upper, num, sym])
+  }, [handleGenerate, passLength, lower, upper, num, sym, opt])
 
   return (
     <>
@@ -78,10 +96,13 @@ const Homepage = () => {
               <Grid xs={12} md={6}>
                 <InputSlider passLength={passLength} setPassLength={setPassLength} />
               </Grid>
-              <Grid xs={6} md={3}>
-                <RadioButtonsGroup />
+              <Grid xs={7} md={4}>
+                <RadioButtonsGroup
+                  opt={opt}
+                  setOpt={setOpt}
+                />
               </Grid>
-              <Grid xs={6} md={3}>
+              <Grid xs={5} md={2}>
                 <Checkboxes
                   lower={lower}
                   setLower={setLower}
@@ -95,6 +116,7 @@ const Homepage = () => {
               </Grid>
             </Grid>
           </Paper>
+          <CustomeButton password={password} handleGenerate={handleGenerate} />
         </div>
       </div>
       <Footer />

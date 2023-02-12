@@ -3,8 +3,6 @@ import './password.css'
 
 import copy from 'copy-to-clipboard';
 
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -13,14 +11,13 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
-import Slide from '@mui/material/Slide';
+import Notification from '../Notification';
 
 function Password({ handleGenerate, password }) {
 
     const [rotate, setRotate] = useState(false);
     const [strength, setStrength] = useState(100);
-
-    const [open, setOpen] = React.useState(false);
+    const [ open, setOpen ] = useState(false)
 
     const handleClick = () => {
         setOpen(true);
@@ -52,7 +49,6 @@ function Password({ handleGenerate, password }) {
     const handleOnClick = () => {
         handleGenerate();
         animate();
-        SlideTransition();
     }
 
     const handleCopy = () => {
@@ -66,10 +62,6 @@ function Password({ handleGenerate, password }) {
         if (password.length < 8) setStrength(30)
         if (password.length < 4) setStrength(0)
     }, [password])
-
-    const SlideTransition = (props) => {
-        return <Slide {...props} direction="down" />;
-    }
 
     return (
         <>
@@ -92,11 +84,7 @@ function Password({ handleGenerate, password }) {
             </Box>
             <LinearProgress variant="determinate" value={strength} color={strengthVariant[strength]} />
 
-            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} TransitionComponent={SlideTransition} >
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    Copied
-                </Alert>
-            </Snackbar>
+            <Notification handleClose={handleClose} open={open} />
         </>
     )
 }
