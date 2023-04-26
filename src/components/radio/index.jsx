@@ -14,7 +14,7 @@ export default function RadioButtonsGroup({ opt, setOpt }) {
   }
 
   return (
-    <FormControl sx={{ display: 'flex', alignItems: 'center' }} >
+    <FormControl sx={{ display: 'flex', alignItems: 'center'}} >
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={opt}
@@ -24,10 +24,25 @@ export default function RadioButtonsGroup({ opt, setOpt }) {
         <FormControlLabel
           value="say"
           control={<Radio />}
+          sx={{ marginY: -1}}
           label={
-            <p className='pText'>Easy to say
+            <p className='pText'>Only Alphabets
               <span>
                 <Tooltip title="Avoid numbers and symbols" placement='right'>
+                  <InfoOutlinedIcon className='icon' />
+                </Tooltip>
+              </span>
+            </p>
+          }
+        />
+         <FormControlLabel
+          value="brackets"
+          control={<Radio />}
+          sx={{ marginY: -1}}
+          label={
+            <p className='pText'>Avoid Brackets
+              <span>
+                <Tooltip title="Avoid symbols like (, ), {, }" placement='right'>
                   <InfoOutlinedIcon className='icon' />
                 </Tooltip>
               </span>
@@ -37,6 +52,7 @@ export default function RadioButtonsGroup({ opt, setOpt }) {
         <FormControlLabel
           value="read"
           control={<Radio />}
+          sx={{ marginY: -1}}
           label={
             <p className='pText'>Easy to read
               <span>
@@ -50,6 +66,7 @@ export default function RadioButtonsGroup({ opt, setOpt }) {
         <FormControlLabel
           value="all"
           control={<Radio />}
+          sx={{ marginY: -1}}
           label={
             <p className='pText'>All characters
               <span>

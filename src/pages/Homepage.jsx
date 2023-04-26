@@ -39,9 +39,10 @@ const Homepage = () => {
     const NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57)
     const SYMBOL_CHAR_CODES = [33, 35, 36, 37, 38, 40, 41, 60, 61, 62, 63, 64, 91, 92, 93, 95, 123, 125]
 
-    const MOD_UPPERCASE = UPPERCASE_CHAR_CODES.filter(num => ![73, 76, 79].includes(num))
-    const MOD_LOWERCASE = LOWERCASE_CHAR_CODES.filter(num => ![105, 108, 111].includes(num))
-    const MOD_Num = NUMBER_CHAR_CODES.filter(num => ![48, 49].includes(num))
+    const MOD_UPPERCASE = UPPERCASE_CHAR_CODES.filter(letter => ![73, 76, 79].includes(letter))
+    const MOD_LOWERCASE = LOWERCASE_CHAR_CODES.filter(letter => ![105, 108, 111].includes(letter))
+    const MOD_NUM = NUMBER_CHAR_CODES.filter(num => ![48, 49].includes(num))
+    const MOD_SYM = SYMBOL_CHAR_CODES.filter(sym => ![40, 41, 60, 62, 91, 92, 93, 123, 125].includes(sym))
 
     function generatePassword(characterAmount, includeLowercase, includeUppercase, includeNumbers, includeSymbols, opt) {
       let charCodes = [];
@@ -49,11 +50,17 @@ const Homepage = () => {
         if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
         if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
       }
+      else if (opt === 'brackets' ){
+        if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
+        if (includeUppercase) charCodes = charCodes.concat(MOD_UPPERCASE)
+        if (includeSymbols) charCodes = charCodes.concat(MOD_SYM)
+        if (includeNumbers) charCodes = charCodes.concat(MOD_NUM)
+      }
       else if (opt === 'read') {
         if (includeLowercase) charCodes = charCodes.concat(MOD_LOWERCASE)
         if (includeUppercase) charCodes = charCodes.concat(MOD_UPPERCASE)
         if (includeSymbols) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
-        if (includeNumbers) charCodes = charCodes.concat(MOD_Num)
+        if (includeNumbers) charCodes = charCodes.concat(MOD_NUM)
       }
       else {
         if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
