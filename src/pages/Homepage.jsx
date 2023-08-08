@@ -51,7 +51,7 @@ const Homepage = () => {
         if (includeUppercase) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
       }
       else if (opt === 'brackets' ){
-        if (includeLowercase) charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
+        if (includeLowercase) charCodes = charCodes.concat(MOD_LOWERCASE)
         if (includeUppercase) charCodes = charCodes.concat(MOD_UPPERCASE)
         if (includeSymbols) charCodes = charCodes.concat(MOD_SYM)
         if (includeNumbers) charCodes = charCodes.concat(MOD_NUM)
